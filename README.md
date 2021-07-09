@@ -1,11 +1,4 @@
 <p align="center">
-   <img src="JustMeet-Frontend/components/images/JustMeet.png">
-</p>
-
----
-
-
-<p align="center">
 <img src="https://forthebadge.com/images/badges/built-with-love.svg"/>
 <img src="https://forthebadge.com/images/badges/built-for-android.svg"/>
 <img src="https://forthebadge.com/images/badges/cc-0.svg"/><br><br>
