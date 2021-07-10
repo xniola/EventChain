@@ -2,7 +2,7 @@
 <img src="https://forthebadge.com/images/badges/built-with-love.svg"/>
 <img src="https://forthebadge.com/images/badges/built-for-android.svg"/>
 <img src="https://forthebadge.com/images/badges/cc-0.svg"/><br><br>
-    <b>JustMeet</b>, progetto realizzato in <b>React Native</b> per il corso di <b>Software Cybersecurity</b> presso <b>Univpm</b>, <i>nell'anno accademico 2020/2021</i>, realizzato dagli studenti Cacopardo Alessio, Perniola Stefano e Zitoli Francesca seguendo i canoni di sviluppo proposti
+    <b>EventChain</b>, progetto realizzato in <b>React Native</b> per il corso di <b>Software Cybersecurity</b> presso <b>Univpm</b>, <i>nell'anno accademico 2020/2021</i>, realizzato dagli studenti Cacopardo Alessio, Perniola Stefano e Zitoli Francesca seguendo i canoni di sviluppo proposti
     <br><br><b>
 </b></p>
 
