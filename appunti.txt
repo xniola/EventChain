@@ -1,0 +1,7 @@
+1) Generare ABI e BINARIO dello smart contract:
+- sudo npm install -g solc
+- solcjs --bin --abi src/main/resources/contracts/evento.sol
+
+
+2) Generare la classe java tramite ABI e BINARIO dello smart contract:
+- web3j generate solidity -a evento.abi -b evento.bin -o .\Web3App\src\main\java -p com.project.contracts
