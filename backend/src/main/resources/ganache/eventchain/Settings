@@ -1,0 +1,24 @@
+{"server":{
+	"gasLimit":1000000000000000,
+	"gasPrice":0,
+	"hardfork":"muirGlacier",
+	"hostname":"127.0.0.1",
+	"port":7545,
+	"network_id":5777,
+	"default_balance_ether":100,
+	"total_accounts":10,
+	"unlocked_accounts":[],
+	"locked":false,
+	"vmErrorsOnRPCResponse":true,
+	"verbose":false,
+	"db_path":"C:\\Users\\Home\\AppData\\Roaming\\Ganache\\workspaces\\eventchain\\chaindata",
+	"mnemonic":"mango inflict eternal common stumble test taste wife cook remove help maximum"
+	},
+"name":"eventchain",
+"isDefault":false,
+"verboseLogging":false,
+"randomizeMnemonicOnStart":false,
+"projects":[],
+"flavor":"ethereum",
+"uuid":"d67b5cb1-de97-4d2e-8d86-d7d4109743cb"
+}

@@ -1,0 +1,5 @@
+npm install --save reactstrap react react-dom
+npm install --save emoji-dictionary
+npm install react-google-login
+npm install --save react-router-dom
+npm install --save web3

@@ -1,0 +1,514 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket Office</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">        
+</head>
+<body>    
+	<div class="card m-3">
+	    <p class="mx-1 card-text"><b>User</b></p>
+		<div class="row mx-3 mb-3 g-3 align-items-center">
+			<div class="col-auto">
+				<button id="signInButton" class="btn btn-primary" onclick="onClickSignIn()">Sign in with Google</button>
+			</div>
+			<div class="col-auto">
+				<button class="btn btn-warning" onclick="onClickUser()">Get User info</button>
+			</div>
+	    </div>
+	</div>
+	<div class="card m-3">
+	    <p class="mx-1 card-text"><b>Event Manager (ROLE: EVENT MANAGER)</b></p>
+	    <div class="row m-3 g-3 align-items-center">
+		  <div class="col-auto">
+		    <label for="em_private_key" class="col-form-label">Ethereum private key:</label>
+		  </div>
+		  <div class="col-auto">
+		    <input type="password" id="em_private_key" class="form-control">
+		  </div>
+		</div>
+		<div class="row mx-3 mb-3 g-3 align-items-center">
+			<div class="col-auto">
+				<button class="btn btn-primary" onclick="onClickEvent()">Create new event</button>
+			</div>
+			<div class="col-auto">
+				<button class="btn btn-warning" onclick="onClickUpdateEvent()">Update event</button>
+			</div>
+			<div class="col-auto">	  	
+				<button class="btn btn-danger" onclick="onClickDeleteEvent()">Delete event</button>
+			</div>
+			<div class="col-auto">	  	
+				<button class="btn btn-secondary" onclick="onClickCloseEvent()">Close event</button>
+			</div>
+			<div class="col-auto">	  	
+				<button class="btn btn-success" onclick="onClickFindNewReseller()">Find new reseller</button>
+			</div>
+			<div class="col-auto">	  	
+				<button class="btn btn-info" onclick="onClickAcceptNewReseller()">Accept new reseller</button>
+			</div>			
+	    </div>
+	</div>
+	<div class="card m-3">
+	    <p class="mx-1 card-text"><b>Event's comments (ROLE: USER)</b></p>
+		<div class="row mx-3 mb-3 g-3 align-items-center">
+			<div class="col-auto">
+				<button class="btn btn-primary" onclick="onClickComment()">Create new comment</button>
+			</div>
+			<div class="col-auto">
+				<button class="btn btn-warning" onclick="onClickUpdateComment()">Update comment</button>
+			</div>
+			<div class="col-auto">
+				<button class="btn btn-success" onclick="onClickFindComments()">Find event comments</button>
+			</div>
+			<div class="col-auto">	  	
+				<button class="btn btn-danger" onclick="onClickDeleteComment()">Delete comment</button>
+			</div>
+	    </div>
+	</div>
+	<div class="card m-3">
+	    <p class="mx-1 card-text"><b>Event's tickets (ROLE: EVENT MANAGER)</b></p>
+		<div class="row mx-3 mb-3 g-3 align-items-center">
+			<div class="col-auto">
+				<button class="btn btn-primary" onclick="onClickTicket()">Create new ticket</button>
+			</div>
+			<div class="col-auto">	  	
+				<button class="btn btn-danger" onclick="onClickDeleteTicket()">Delete ticket</button>
+			</div>
+			<div class="col-auto">	  	
+				<button class="btn btn-success" onclick="onClickFindTickets()">Find tickets</button>
+			</div>
+	    </div>
+	</div>
+	<div class="card m-3">
+	    <p class="mx-1 card-text"><b>Ticket Reseller (ROLE: TICKET RESELLER)</b></p>
+	    <div class="row m-3 g-3 align-items-center">
+		  <div class="col-auto">
+		    <label for="tr_private_key" class="col-form-label">Ethereum private key:</label>
+		  </div>
+		  <div class="col-auto">
+		    <input type="password" id="tr_private_key" class="form-control">
+		  </div>
+		</div>
+		<div class="row mx-3 mb-3 g-3 align-items-center">
+			<div class="col-auto">
+				<button class="btn btn-primary" onclick="onClickEventReseller()">Reseller event request</button>
+			</div>
+			<div class="col-auto">
+				<button class="btn btn-success" onclick="onClickResellerFindPurchaseRequest()">Find purchase request</button>
+			</div>
+			<div class="col-auto">
+				<button class="btn btn-warning" onclick="onClickAcceptPurchaseRequest()">Accept purchase request</button>
+			</div>
+			<div class="col-auto">
+				<button class="btn btn-danger" onclick="onClickRefusePurchaseRequest()">Refuse purchase request</button>
+			</div>
+			<div class="col-auto">
+				<button class="btn btn-warning" onclick="onClickCompletePurchaseRequest()">Complete purchase request</button>
+			</div>
+	    </div>		
+	</div>
+	<div class="card m-3">
+	    <p class="mx-1 card-text"><b>Ticket Buyer (ROLE: TICKET BUYER)</b></p>
+	    <div class="row m-3 g-3 align-items-center">
+		  <div class="col-auto">
+		    <label for="tr_private_key" class="col-form-label">Ethereum private key:</label>
+		  </div>
+		  <div class="col-auto">
+		    <input type="password" id="tb_private_key" class="form-control">
+		  </div>
+		</div>
+		<div class="row mx-3 mb-3 g-3 align-items-center">
+			<div class="col-auto">
+				<button class="btn btn-success" onclick="onClickFindResellers()">Find resellers</button>
+			</div>
+			<div class="col-auto">
+				<button class="btn btn-primary" onclick="onClickPurchaseRequest()">Create new purchase request</button>
+			</div>
+			<div class="col-auto">
+				<button class="btn btn-success" onclick="onClickFindPurchaseRequest()">Find my purchase request</button>
+			</div>
+			<div class="col-auto">
+				<button class="btn btn-danger" onclick="onClickBuyPurchaseRequest(false)">Payment failed purchase request</button>
+			</div>
+			<div class="col-auto">
+				<button class="btn btn-danger" onclick="onClickBuyPurchaseRequest(true)">Payment success purchase request</button>
+			</div>
+			<div class="col-auto">	  	
+				<button class="btn btn-dark" onclick="onClickTestWeb3Javascript()">Test Web3j by javascript</button>
+			</div>
+	    </div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<script src="https://apis.google.com/js/client:platform.js?onload=renderButton" async defer></script>
+	<script>
+	    function renderButton() {
+	        gapi.load('auth2', function () {
+	            auth2 = gapi.auth2.init({
+	                client_id: '583922006217-k975eb3ph9vbjti3n2j9ofml0v1kg8ll.apps.googleusercontent.com',
+	                scope: 'profile email',
+	            });
+	        });
+	    }
+	</script>
+	<script>
+		const web3 = new Web3("ws://localhost:7545");		
+	    let comment;
+	    let event;
+	    let eventReseller;
+		let purchaseRequest;
+	    let ticket;	
+	    let token;	    
+	    function onSuccess(result) {
+	        console.log(result);
+	        authenticate(result.code)
+	        .done(function(data) {
+	          token = data.token;
+	          console.log(data);
+			})
+			.fail(function(jqXHR, textStatus, errorThrown) {
+			  console.log(errorThrown);
+			});
+	    }
+		
+		function getFullUri(uri) {
+	        return 'https://localhost:8081/' + uri;
+	    }
+		
+		function getTokenHeader() {
+	        return {Authorization: 'Bearer '+token};
+	    }
+	
+	    function authenticate(code) {
+	    	return $.ajax({
+		      url: getFullUri('auth/google'),
+		      type: 'POST',
+		      data: JSON.stringify({code}),
+	      	});
+	    }
+	    
+	    function deleteRequest(uri) {
+			return RestCall(uri,'DELETE');
+	    }
+	    
+	    function deleteRequestData(uri,obj) {
+			return RestCallData(uri,'DELETE',obj);
+	    }
+	    		   	
+		function getRequest(uri) {
+			return RestCall(uri,'GET');
+	    }
+		
+		function postRequest(uri, obj) {
+	        return RestCallData(uri,'POST',obj);
+	    }
+				
+		function putRequest(uri, obj) {
+	        return RestCallData(uri,'PUT',obj);
+	    }
+		
+		function RestCall(uri,method) {
+	        return $.ajax({
+	          url: getFullUri(uri),
+	          type: method,
+	          headers: getTokenHeader()
+	        });
+	    }
+		
+		function RestCallData(uri,method,obj) {
+			return $.ajax({
+		      url: getFullUri(uri),
+		      type: method,
+		      contentType: 'application/json; charset=utf-8',
+		      data: JSON.stringify(obj),
+		      dataType: 'json',
+	          headers: getTokenHeader()
+			});
+	    }	
+	    function onFailure(error) {
+	        console.log(error);
+	    }	
+	    function onClickSignIn() {
+	        auth2.grantOfflineAccess()
+	            .then(onSuccess)
+	            .catch(onFailure);
+	    }	
+	    function onClickUser() {
+	        getRequest('user')
+	        .done(function(res) {
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	  		  console.log(errorThrown);
+	  		});
+	    }		
+		function onClickEvent() {
+		    let date = new Date();
+	        date.setHours(date.getHours() + 2 );
+		    let data = {
+			    title: 'Sagra della salsiccia',
+			    description: 'Fuori i vegani!',
+			    start: date.getTime(),
+				end: date.getTime(),
+				location:'casa mia',
+			    pk:document.getElementById('em_private_key').value
+			};
+	        postRequest('event/create', data)
+	        .done(function(res) {
+	        	event = res;
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+		  		  console.log(errorThrown);
+	  		});
+	    }		
+		function onClickUpdateEvent() {
+			let date = new Date();
+	        date.setHours(date.getHours() + 3);
+		    let data = {
+			    title: 'Sagra della salsiccia buona',
+			    description: 'Fuori i vegani sempre!',
+			    start: date.getTime(),
+				end: date.getTime(),
+				location:'vicino casa mia',
+				pk:document.getElementById('em_private_key').value
+			};
+			putRequest('event/'+event.id+'/update', data)
+	        .done(function(res) {
+	        	event = res;
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	 		  console.log(errorThrown);
+			});
+	    }
+		function onClickDeleteEvent() {
+		    deleteRequestData('event/'+event.id+'/delete',{pk:document.getElementById('em_private_key').value})
+	        .done(function(res) {
+	        	event = null;
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	 		  console.log(errorThrown);
+			});
+	    }
+		function onClickCloseEvent() {
+		    putRequest('event/'+event.id+'/close',{pk:document.getElementById('em_private_key').value})
+	        .done(function(res) {
+	        	console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	 		  console.log(errorThrown);
+			});
+	    }
+		function onClickFindNewReseller() {
+			getRequest('event/'+event.id+'/findNewEventReseller')
+	        .done(function(res) {
+	        	eventReseller = res[0];
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	  		  console.log(errorThrown);
+	  		});
+	    }
+		function onClickAcceptNewReseller() {
+			putRequest('eventReseller/'+eventReseller.id+'/accept',{pk:document.getElementById('em_private_key').value})
+	        .done(function(res) {
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	  		  console.log(errorThrown);
+	  		});
+	    }
+		function onClickComment() {
+			postRequest('event/'+event.id+'/createComment', {body:'Veg non ammessi!!!'})
+	        .done(function(res) {
+	          comment = res;
+	          console.log(res);
+	   		})
+	   		.fail(function(jqXHR, textStatus, errorThrown) {
+	  		  console.log(errorThrown);
+			});
+	    }
+		function onClickUpdateComment() {
+			putRequest('comment/'+comment.id+'/update', {body:'No Veg!!!'})
+	        .done(function(res) {
+	        	comment = res;
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	 		  console.log(errorThrown);
+			});
+	    }
+		function onClickFindComments() {
+			getRequest('event/'+event.id +'/comments')
+	        .done(function(res) {
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	  		  console.log(errorThrown);
+	  		});
+	    }
+		function onClickDeleteComment() {
+			deleteRequest('comment/'+comment.id+'/delete')
+	        .done(function(res) {
+	        	comment = null;
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	 		  console.log(errorThrown);
+			});
+	    }
+		function onClickTicket() {
+			postRequest('event/'+event.id+'/createTickets/1', {price:1000,type:'TRIBUNA'})
+	        .done(function(res) {
+	          ticket = res[0];
+	          console.log(res);
+	   		})
+	   		.fail(function(jqXHR, textStatus, errorThrown) {
+	  		  console.log(errorThrown);
+			});
+	    }
+		function onClickDeleteTicket() {
+			deleteRequest('ticket/'+ticket.id+'/delete')
+	        .done(function(res) {
+	        	ticket = null;
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	 		  console.log(errorThrown);
+			});
+	    }
+		function onClickFindTickets() {
+			getRequest('event/'+event.id +'/tickets')
+	        .done(function(res) {
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	  		  console.log(errorThrown);
+	  		});
+	    }
+		function onClickEventReseller() {
+		    postRequest('event/'+event.id+'/createEventReseller',{pk:document.getElementById('tr_private_key').value})
+	        .done(function(res) {
+	        	eventReseller = res;
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	 		  console.log(errorThrown);
+			});
+	    }
+		function onClickResellerFindPurchaseRequest() {
+			getRequest('event/'+event.id +'/resellerPurchaseRequests')
+	        .done(function(res) {
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	  		  console.log(errorThrown);
+	  		});
+	    }
+		function onClickAcceptPurchaseRequest() {
+		    let data = {};
+			putRequest('purchaseRequest/'+purchaseRequest.id +'/accept/'+ticket.id,data)
+	        .done(function(res) {
+				purchaseRequest = res;
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	  		  console.log(errorThrown);
+	  		});
+	    }
+		function onClickRefusePurchaseRequest() {
+			let data = {
+				text:'Rigettata per mancanza disponibilità',
+				pk:document.getElementById('tr_private_key').value				
+			};
+			putRequest('purchaseRequest/'+purchaseRequest.id +'/refuse',data)
+	        .done(function(res) {
+				purchaseRequest = res;
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	  		  console.log(errorThrown);
+	  		});
+	    }
+		function onClickCompletePurchaseRequest() {
+			let data = {
+				text:'Pagamento non eseguito!',
+				pk:document.getElementById('tr_private_key').value				
+			};
+			putRequest('purchaseRequest/'+purchaseRequest.id +'/complete',data)
+	        .done(function(res) {
+				purchaseRequest = res;
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	  		  console.log(errorThrown);
+	  		});
+	    }
+		function onClickFindResellers() {
+			getRequest('event/'+event.id +'/resellers')
+	        .done(function(res) {
+	        	eventReseller = res[0];
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	  		  console.log(errorThrown);
+	  		});
+	    }		
+		function onClickPurchaseRequest() {
+			let data = {
+				    text: 'Voglio i posti belli',
+					pk:document.getElementById('tb_private_key').value
+			};
+			postRequest('eventReseller/'+eventReseller.id+'/createPurchaseRequest',data)
+	        .done(function(res) {
+				purchaseRequest = res;
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	  		  console.log(errorThrown);
+	  		});
+	    }
+		function onClickFindPurchaseRequest() {
+			getRequest('event/'+event.id +'/purchaseRequests')
+	        .done(function(res) {
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	  		  console.log(errorThrown);
+	  		});
+	    }
+		function onClickBuyPurchaseRequest(result) {
+			let data = {};
+			putRequest('purchaseRequest/'+purchaseRequest.id +'/buy/'+result,data)
+	        .done(function(res) {
+	            console.log(res);
+	  		})
+	  		.fail(function(jqXHR, textStatus, errorThrown) {
+	  		  console.log(errorThrown);
+	  		});
+	    }
+		
+		function onClickTestWeb3Javascript() {		    
+			$.getJSON('EventContract.abi')
+			.done(function(data) {
+			   const EventContract = new web3.eth.Contract(data, event.id);
+			   $.getJSON('PurchaseRequestContract.abi')
+				.done(function(data2) {
+				   const PurchaseRequestContract = new web3.eth.Contract(data2, purchaseRequest.id);
+				   var account = web3.eth.accounts.privateKeyToAccount(document.getElementById('tb_private_key').value);
+			       var tBAddress = account.address;
+				   PurchaseRequestContract.methods.tokenId()
+				   .call({from: tBAddress}, function(error, result){
+						EventContract.methods.tickets(result)
+						.call({from: tBAddress}, function(error2, result2){
+						   console.log(result2);
+			 			});
+	 			   });				   
+				});
+			});
+	    }
+	</script>
+</body>
+</html>
