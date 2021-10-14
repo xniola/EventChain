@@ -45,6 +45,21 @@ class BuyerPurchaseRequests extends React.Component {
         window.location.href="/ticketBuyer/events"
     }
 
+    sbagliaPagamento = (idRichiesta) => {
+      var auth = 'Bearer '.concat(sessionStorage.getItem("serverToken"))
+
+      fetch('http://localhost:8081/purchaseRequest/'+idRichiesta+'/buy/false', {
+        method: 'PUT',
+        headers: {
+          'Authorization': auth,
+          'Accept': 'application/json , */*',
+          'Content-Type': 'application/json',
+        },
+      })
+      alert('AAAAAAA! Non sono riuscito a pagare :(')
+      this.goBack()
+    }
+
     pagaBiglietto = (idRichiesta) => {
       var auth = 'Bearer '.concat(sessionStorage.getItem("serverToken"))
 
@@ -82,8 +97,14 @@ class BuyerPurchaseRequests extends React.Component {
                Stato: {request.ticket.state} <br />
                Prezzo: {request.ticket.price} <br />
                Tipo: {request.ticket.type} <br />
-               Risultato: {request.status}
+               Risultato: {request.status} <br />
+               Pagamenti falliti: {request.failedPayment} <br />
+               Risposta dal reseller: {request.responseText}
             </CardText>
+
+            <button className="btn_pagamento" disabled={request.ticket.state=='PAYED'} onClick={() => this.sbagliaPagamento(request.id)}>
+                Pagamento Fallito
+            </button>
 
             <button className="btn_pagamento" disabled={request.ticket.state=='PAYED'} onClick={() => this.pagaBiglietto(request.id)}>
                 Paga Biglietto

@@ -40,8 +40,9 @@ class EventResellers extends React.Component{
             pk: this.state.pk
           })
         })
+
         alert('La richiesta è stata inviata!')
-        window.location.reload()
+        window.location.href = "/ticketBuyer/events"
       }
 
       goBack(){

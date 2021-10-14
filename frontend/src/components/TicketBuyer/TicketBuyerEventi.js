@@ -16,10 +16,6 @@ class TicketBuyerEventi extends React.Component {
         window.location.href="/user"
       }
 
-      findResellers(id){
-        window.location.href = "/event/"+id+"/resellers"
-      }
-
       purchaseRequests(id){
         window.location.href="/event/"+id+"/purchaseRequests"
       }
@@ -67,13 +63,6 @@ class TicketBuyerEventi extends React.Component {
           </li>
 
           <li className="nav-item">
-          <Button className="button-color" color="primary" 
-            onClick={() => this.findResellers(event.id)} >Cerca dei resellers
-          </Button>
-           
-          </li>
-
-          <li className="nav-item">
           <Button className="button-color" color="secondary" onClick={() => this.handleFAQ(event.id)} >FAQ</Button>
           </li>
 
@@ -83,7 +72,7 @@ class TicketBuyerEventi extends React.Component {
       <div className="card-body">
         <h5 className="card-title">{event.title}</h5>
         <p className="card-text">{event.description}</p>
-        <a href="#" className="btn btn-primary button-color">Crea una richiesta di acquisto</a>
+        <a href={"/event/"+event.id+"/resellers"} className="btn btn-primary button-color">Cerca dei resellers</a>
       </div>
     </div>
     ))}

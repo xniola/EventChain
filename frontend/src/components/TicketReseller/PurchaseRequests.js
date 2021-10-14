@@ -9,7 +9,14 @@ class PurchaseRequests extends React.Component {
         this.state = {
           isLoaded: false,
           items: [],
-          idBiglietto: 0
+          tickets: [],
+          chiaveEth: '',
+          messaggio: '',
+          
+          // per distinguere le requests
+          risposti: [],
+          non_risposti: [],
+          non_pagati: []
         };
       }
 
@@ -22,16 +29,10 @@ class PurchaseRequests extends React.Component {
         .then(res => res.json())
         .then(
           (items) => {
-            if(items[0]){
               this.setState({
                   isLoaded: true,
-                  idBiglietto: items[0].id
-            })}
-            else{
-              this.setState({
-                isLoaded:true
-              })
-            }
+                  tickets: items
+            })
           },
           // Note: it's important to handle errors here
           // instead of a catch() block so that we don't swallow
@@ -48,7 +49,7 @@ class PurchaseRequests extends React.Component {
       validaBiglietto = (idRichiesta) => {
         var auth = 'Bearer '.concat(sessionStorage.getItem("serverToken"))
 
-        fetch('http://localhost:8081/purchaseRequest/'+idRichiesta+'/accept/'+this.state.idBiglietto, {
+        fetch('http://localhost:8081/purchaseRequest/'+idRichiesta+'/accept/'+this.state.tickets[0].id, {
           method: 'PUT',
           headers: {
             'Authorization': auth,
@@ -63,10 +64,21 @@ class PurchaseRequests extends React.Component {
       goBack(){
         window.location.href = "/ticketReseller/events"
       }
-    
 
+      handleChange(chiave){
+        this.setState({
+          chiaveEth: chiave.target.value 
+        })
+      }
+    
+      handleMessaggio(mex){
+        this.setState({
+          messaggio: mex.target.value
+        })
+      }
 
       componentDidMount(){
+        this.cercaBiglietto(this.props.match.params.id);
         var auth = 'Bearer '.concat(sessionStorage.getItem('serverToken'))
         let header= {
           headers: {'Authorization': auth}
@@ -75,11 +87,29 @@ class PurchaseRequests extends React.Component {
         .then(res => res.json())
         .then(
           (items) => {
+            for (var i = 0; i < items.length; i++){
+              if (items[i].ticket == null){
+                this.setState({
+                  non_risposti: [...this.state.non_risposti, items[i]]
+                });
+              }
+              else{
+                if(items[i].taxSeal == null){
+                  this.setState({
+                    non_pagati: [...this.state.non_pagati, items[i]]
+                  })
+                }
+                else{
+                this.setState({
+                  risposti: [...this.state.risposti, items[i]]
+                });
+                }
+              }
+            }
           this.setState({
               isLoaded: true,
-              items
+              //items
           });
-          this.cercaBiglietto(this.props.match.params.id);
           },
           // Note: it's important to handle errors here
           // instead of a catch() block so that we don't swallow
@@ -101,8 +131,8 @@ class PurchaseRequests extends React.Component {
     reload(){
       window.location.reload();
     }
-
-    completaAcuisto = (idRichiesta) => {
+  
+    completaAcquisto = (idRichiesta) => {
       var auth = 'Bearer '.concat(sessionStorage.getItem("serverToken"))
       fetch('http://localhost:8081/purchaseRequest/'+idRichiesta+'/complete', {
         method: 'PUT',
@@ -111,6 +141,10 @@ class PurchaseRequests extends React.Component {
           'Accept': 'application/json , */*',
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+          text: this.state.messaggio,
+          pk: this.state.chiaveEth
+        })
       })
       alert('Acquisto completato!')
       this.reload()
@@ -119,9 +153,90 @@ class PurchaseRequests extends React.Component {
 
     render(){
         return(
+          
         <div classNameName="event-list">
         <h5 style={{marginBottom: '50px'}}>Ecco le richieste di acquisto: </h5>
-      {this.state.items.map(request =>(
+      {/*NON RISPOSTI*/}
+      {this.state.non_risposti.map(request =>(
+        <div className="card text-center">
+        <div className="card-header">
+        
+        <Card>
+          <CardBody>
+            <CardTitle tag="h5">
+            Messaggio: {request.description}
+            </CardTitle>
+            <CardSubtitle tag="h6" className="mb-2 text-muted">In attesa di risposta o rifiutato</CardSubtitle>
+            <CardText style={{marginTop: '20px'}}>
+            Evento: {request.event.title}
+            </CardText>
+            <CardText style={{marginTop: '20px'}}>
+            Data: {request.timestamp.substring(0,19).replace('T', ' ')}
+            </CardText>
+            <CardText>
+            Status: {request.status} 
+            </CardText>
+            
+            <button className="btn_pagamento" style={{color: 'black', marginLeft:'300px'}} disabled={request.state!='INIT'}
+            onClick={() => this.validaBiglietto(request.id)}>Accetta</button>
+          </CardBody>    
+        </Card>
+        </div>
+        
+      </div>
+      ))}
+
+
+      {/*NON PAGATI*/}
+      {this.state.non_pagati.map(request =>(
+        <div className="card text-center">
+        <div className="card-header">
+        
+        <Card>
+          <CardBody>
+            <CardTitle tag="h5">
+            Messaggio: {request.description}
+            </CardTitle>
+            <CardSubtitle tag="h6" className="mb-2 text-muted">Pagamento fallito dal buyer (num. fallimenti: {request.failedPayment}) </CardSubtitle>
+            <CardText style={{marginTop: '20px'}}>
+            Evento: {request.event.title}
+            </CardText>
+            <CardText style={{marginTop: '20px'}}>
+            Data: {request.timestamp.substring(0,19).replace('T', ' ')}
+            </CardText>
+            <CardText>
+            Status: {request.status} 
+            </CardText>
+
+            <form style={{border: '2px'}} >
+            <label>
+              Messaggio:
+              <input style={{marginLeft: '5px', marginBottom: '10px'}} type="text" onChange={this.handleMessaggio.bind(this)}/>
+            </label>
+         </form>
+          
+          <form style={{border: '2px'}} >
+            <label>
+              Chiave Eth:
+              <input style={{marginLeft: '5px', marginBottom: '10px'}} type="password" onChange={this.handleChange.bind(this)}/>
+            </label>
+         </form>
+            
+            <button className="btn_pagamento" style={{color: 'black', marginLeft:'300px'}} disabled={request.ticket==null}
+            onClick={() => this.completaAcquisto(request.id)}>Rifuta acquisto</button>
+          </CardBody>    
+        </Card>
+        </div>
+        
+      </div>
+      ))}
+
+
+
+      {/*RISPOSTI*/}
+      {this.state.risposti.map(request =>(
+        
+          
       <div className="card text-center">
       <div className="card-header">
 
@@ -143,12 +258,23 @@ class PurchaseRequests extends React.Component {
           <CardText>
           Status: {request.status} 
           </CardText>
-          
-          <button className="btn_pagamento" disabled={request.ticket.state=='PAYED'} style={{color: 'black', marginLeft:'300px'}}
-          onClick={() => this.validaBiglietto(request.id)}>Accetta</button>
 
-          <button className="btn_pagamento" disabled={!request.ticket.state=='PAYED'} style={{color: 'black', marginLeft:'300px'}}
-            onClick={() => this.completaAcuisto(request.id)}>Completa acquisto</button>
+          <form style={{border: '2px'}} >
+            <label>
+              Messaggio:
+              <input style={{marginLeft: '5px', marginBottom: '10px'}} type="text" onChange={this.handleMessaggio.bind(this)}/>
+            </label>
+         </form>
+          
+          <form style={{border: '2px'}} >
+            <label>
+              Chiave Eth:
+              <input style={{marginLeft: '5px', marginBottom: '10px'}} type="password" onChange={this.handleChange.bind(this)}/>
+            </label>
+         </form>
+
+          <button className="btn_pagamento" disabled={request.ticket.state=='SELLED'} style={{color: 'black', marginLeft:'300px'}}
+            onClick={() => this.completaAcquisto(request.id)}>Completa acquisto</button>
         </CardBody>    
       </Card>
       </div>
