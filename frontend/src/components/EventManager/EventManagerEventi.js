@@ -13,6 +13,10 @@ class EventManagerEventi extends React.Component {
         };
       }
 
+      closeEvent(id){
+        window.location.href = "/event/"+id+"/close"
+      }
+
       deleteEvent(id){
         window.location.href = "/event/"+id+"/delete"
       }
@@ -88,19 +92,13 @@ class EventManagerEventi extends React.Component {
           <Button className="button-color" color="primary" onClick={() => this.trovaBiglietti(event.id)} >Trova Biglietti</Button> 
           </li>
           <li className="nav-item">
-          <Button className="button-color" color="primary" onClick={() => alert(
-              "Inizio evento: "+event.start+"\n"+
-              "Fine evento: "+event.end+"\n"+
-              "Luogo: "+event.location.displayName+"\n"+
-              "Organizzatore: "+event.eventManager.username+"\n"+
-              "Posti massimi: "+event.numPartecipanti+"\n"+
-              "Posti ancora disponibili: "+(event.numPartecipanti-event.adesioniAttuali)
-              )} >Info Evento</Button>
-           {/* <a className="nav-link active" href={"/event/"+event.id}>Info Evento</a> */}
+          <Button className="button-color" color="secondary"
+           onClick={() => this.creaTicket(event.id)} >Crea un Ticket</Button>
+
           </li>
           <li className="nav-item">
-          <Button className="button-color" color="secondary"
-           onClick={() => this.creaTicket(event.id)} >Crea nuovo Ticket</Button>
+          <Button className="button-color" color="primary" 
+          onClick={() => this.closeEvent(event.id)} >Chiudi Evento</Button>
           </li>
 
           <li>
@@ -112,9 +110,11 @@ class EventManagerEventi extends React.Component {
       </div>
       <div className="card-body">
         <h5 className="card-title">{event.title}</h5>
+        <h6 className="card-title">Luogo: {event.location}</h6>
+        <h6 className="card-title">Inizio: {event.start.substring(0,19).replace('T', ' ')}</h6>
+        <h6 className="card-title">Fine: {event.end.substring(0,19).replace('T', ' ')}</h6>
         <p className="card-text">{event.description}</p>
         <Button className="button-color" color="secondary" onClick={() => this.findReseller(event.id)} >Visualizza richieste di reselling</Button>
-        {/*<a href={"http://localhost:8081/event/"+event.id+"/findNewEventReseller"} className="btn btn-primary button-color">Trova un Reseller</a>*/}
       </div>
     </div>
     ))}

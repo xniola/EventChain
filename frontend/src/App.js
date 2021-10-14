@@ -22,7 +22,7 @@ import TicketBuyerEventi from "./components/TicketBuyer/TicketBuyerEventi";
 import BuyerPurchaseRequests from "./components/TicketBuyer/BuyerPurchaseRequests";
 import EventResellers from "./components/TicketBuyer/EventResellers";
 import EliminaEvento from "./components/EventManager/EliminaEvento";
-
+import CloseEvent from "./components/EventManager/CloseEvent";
 
 
 const App = () => {
@@ -74,6 +74,8 @@ const App = () => {
             <Route exact path = "/event/:id/comments" component={FAQ}/>
 
             <Route exact path = "/event/:id/delete" component={EliminaEvento}/>
+
+            <Route exact path = "/event/:id/close" component={CloseEvent}/>
 
             </Switch>
         </div>

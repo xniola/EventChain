@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button } from 'reactstrap';
+import { Card, CardText, CardBody,
+  CardTitle, CardSubtitle, Button } from 'reactstrap';
 
 
 class PurchaseRequests extends React.Component {
@@ -97,6 +98,23 @@ class PurchaseRequests extends React.Component {
         window.location.href="/ticketReseller/events"
     }
 
+    reload(){
+      window.location.reload();
+    }
+
+    completaAcuisto = (idRichiesta) => {
+      var auth = 'Bearer '.concat(sessionStorage.getItem("serverToken"))
+      fetch('http://localhost:8081/purchaseRequest/'+idRichiesta+'/complete', {
+        method: 'PUT',
+        headers: {
+          'Authorization': auth,
+          'Accept': 'application/json , */*',
+          'Content-Type': 'application/json',
+        },
+      })
+      alert('Acquisto completato!')
+      this.reload()
+    }
 
 
     render(){
@@ -106,19 +124,33 @@ class PurchaseRequests extends React.Component {
       {this.state.items.map(request =>(
       <div className="card text-center">
       <div className="card-header">
-        <ul className="nav nav-tabs card-header-tabs">
-          
-          <li className="nav-item">
-            Messaggio: {request.description} <br/> 
-            Data: {request.timestamp.substring(0,19).replace('T', ' ')} <br/>
-            Pagato: {request.paymentTime.substring(0,19).replace('T', ' ')} <br/>
-            Sigillo fiscale: 0x{Buffer.from(request.ticket.taxSeal, 'utf8').toString('hex').substring(0,8)} ...
-          </li>
+
+      <Card>
+        <CardBody>
+          <CardTitle tag="h5">
+          Messaggio: {request.description}
+          </CardTitle>
+          <CardSubtitle tag="h6" className="mb-2 text-muted">Sigillo fiscale: 0x{Buffer.from(request.ticket.taxSeal, 'utf8').toString('hex').substring(0,32)} </CardSubtitle>
+          <CardText style={{marginTop: '20px'}}>
+          Evento: {request.event.title}
+          </CardText>
+          <CardText style={{marginTop: '20px'}}>
+          Data: {request.timestamp.substring(0,19).replace('T', ' ')}
+          </CardText>
+          <CardText>
+          Pagato: {request.paymentTime.substring(0,19).replace('T', ' ')} ({request.ticket.state})
+          </CardText>
+          <CardText>
+          Status: {request.status} 
+          </CardText>
           
           <button className="btn_pagamento" disabled={request.ticket.state=='PAYED'} style={{color: 'black', marginLeft:'300px'}}
-            onClick={() => this.validaBiglietto(request.id)}>Accetta</button>
-        </ul>
+          onClick={() => this.validaBiglietto(request.id)}>Accetta</button>
 
+          <button className="btn_pagamento" disabled={!request.ticket.state=='PAYED'} style={{color: 'black', marginLeft:'300px'}}
+            onClick={() => this.completaAcuisto(request.id)}>Completa acquisto</button>
+        </CardBody>    
+      </Card>
       </div>
       
     </div>
