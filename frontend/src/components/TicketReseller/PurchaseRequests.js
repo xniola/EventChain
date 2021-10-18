@@ -94,7 +94,7 @@ class PurchaseRequests extends React.Component {
                 });
               }
               else{
-                if(items[i].taxSeal == null){
+                if(items[i].ticket.taxSeal == null){
                   this.setState({
                     non_pagati: [...this.state.non_pagati, items[i]]
                   })
@@ -146,7 +146,7 @@ class PurchaseRequests extends React.Component {
           pk: this.state.chiaveEth
         })
       })
-      alert('Acquisto completato!')
+      alert('Richiesta completata!')
       this.reload()
     }
 
@@ -177,7 +177,7 @@ class PurchaseRequests extends React.Component {
             Status: {request.status} 
             </CardText>
             
-            <button className="btn_pagamento" style={{color: 'black', marginLeft:'300px'}} disabled={request.state!='INIT'}
+            <button className="btn_pagamento" style={{color: 'black', marginLeft:'300px'}} disabled={request.status!='INIT'}
             onClick={() => this.validaBiglietto(request.id)}>Accetta</button>
           </CardBody>    
         </Card>
@@ -222,8 +222,8 @@ class PurchaseRequests extends React.Component {
             </label>
          </form>
             
-            <button className="btn_pagamento" style={{color: 'black', marginLeft:'300px'}} disabled={request.ticket==null}
-            onClick={() => this.completaAcquisto(request.id)}>Rifuta acquisto</button>
+            <button className="btn_pagamento" style={{color: 'black', marginLeft:'300px'}} disabled={request.status=='SUCCEED'}
+            onClick={() => this.completaAcquisto(request.id)}>Rifiuta acquisto</button>
           </CardBody>    
         </Card>
         </div>

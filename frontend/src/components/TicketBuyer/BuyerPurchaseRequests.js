@@ -10,7 +10,9 @@ class BuyerPurchaseRequests extends React.Component {
         super(props);
         this.state = {
           isLoaded: false,
-          items: []
+
+          items: [],
+          failed_purchase: []
         };
       }
 
@@ -23,10 +25,21 @@ class BuyerPurchaseRequests extends React.Component {
         .then(res => res.json())
         .then(
           (items) => {
-          this.setState({
-              isLoaded: true,
-              items
-          });
+            for (var i = 0; i < items.length; i++){
+              if (items[i].status == 'FAILED'){
+                this.setState({
+                  failed_purchase: [...this.state.failed_purchase, items[i]]
+                });
+              }
+              else{
+                  this.setState({
+                    items: [...this.state.items, items[i]]
+                  })
+                }
+            }
+            this.setState({
+              isLoaded: true
+              });
           },
           // Note: it's important to handle errors here
           // instead of a catch() block so that we don't swallow
@@ -80,6 +93,36 @@ class BuyerPurchaseRequests extends React.Component {
         return(
         <div classNameName="event-list">
         <h5 style={{marginBottom: '50px'}}>Ecco le richieste di acquisto: </h5>
+
+        {/* RICHIESTE RIFIUTATE DAL RESELLER */}
+        {this.state.failed_purchase.map(request =>(
+      <div className="card text-center">
+      <div className="card-header">
+        <ul className="nav nav-tabs card-header-tabs">
+          <li className="nav-item">
+            La tua richiesta: {request.description}
+            <Card>
+          <CardBody>
+            <CardTitle tag="h5">
+              <img src={ticketPic} alt = "" style={{width:'25%'}}/>
+              Il reseller ha rifiutato la tua richiesta
+            </CardTitle>
+            <CardText style={{marginTop: '20px'}}>
+               Risultato: {request.status} <br />
+               Pagamenti falliti: {request.failedPayment} <br />
+               Risposta dal reseller: {request.responseText}
+            </CardText>
+
+          </CardBody>
+        </Card>
+          </li>
+        </ul>
+      </div>
+    </div>
+    ))}
+
+
+      {/*TUTTE LE ALTRE RICHIESTE*/}
       {this.state.items.map(request =>(
       <div className="card text-center">
       <div className="card-header">
@@ -120,6 +163,8 @@ class BuyerPurchaseRequests extends React.Component {
       
     </div>
     ))}
+
+  
 
           <Button style={{color: 'black'}} onClick={this.goBack.bind(this)}>Torna indietro</Button>
     </div>
