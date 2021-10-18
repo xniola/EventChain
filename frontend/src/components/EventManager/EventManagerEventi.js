@@ -9,6 +9,7 @@ class EventManagerEventi extends React.Component {
           selected_id_event: 0,
           openfaq: false,
           items: [],
+          chiusi: [],
           key: ''
         };
       }
@@ -30,9 +31,20 @@ class EventManagerEventi extends React.Component {
         .then(res => res.json())
         .then(
           (items) => {
+            for (var i = 0; i < items.length; i++){
+              if (items[i].opened == false){
+                this.setState({
+                  chiusi: [...this.state.chiusi, items[i]]
+                });
+              }
+              else{
+                  this.setState({
+                    items: [...this.state.items, items[i]]
+                  })
+                }
+            }
           this.setState({
               isLoaded: true,
-              items
           });
           },
           // Note: it's important to handle errors here
@@ -84,6 +96,7 @@ class EventManagerEventi extends React.Component {
         return(
         <div classNameName="event-list">
       <h5 style={{marginBottom:'35px'}}>Ecco la lista degli eventi:</h5>
+
       {this.state.items.map(event =>(
       <div className="card text-center">
       <div className="card-header">
@@ -119,7 +132,24 @@ class EventManagerEventi extends React.Component {
     </div>
     ))}
 
-          <Button style={{color: 'black'}} onClick={this.goBack.bind(this)}>Torna indietro</Button>
+    {this.state.chiusi.map(event =>(
+      <div className="card text-center">
+      <div className="card-header">
+        <ul className="nav nav-tabs card-header-tabs">
+          <li className="nav-item">
+          <Button className="button-color" color="primary" onClick={() => this.trovaBiglietti(event.id)} >Trova Biglietti</Button> 
+          </li>
+        </ul>
+      </div>
+      <div className="card-body">
+        <h5 className="card-title">{event.title}</h5>
+        <p className="card-text">Questo evento è stato chiuso</p>
+       
+      </div>
+    </div>
+    ))}
+
+    <Button style={{color: 'black'}} onClick={this.goBack.bind(this)}>Torna indietro</Button>
     </div>
         )
     }

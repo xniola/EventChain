@@ -1,8 +1,11 @@
 import React from 'react'
 import { Button ,Card, CardText, CardBody, CardTitle } from 'reactstrap';
+import Web3 from 'web3';
 
 
 import ticketPic from '../../images/ticket2.jpg'
+
+import $ from 'jquery'; 
 
 
 class BuyerPurchaseRequests extends React.Component {
@@ -12,9 +15,79 @@ class BuyerPurchaseRequests extends React.Component {
           isLoaded: false,
 
           items: [],
-          failed_purchase: []
+          failed_purchase: [],
+          chiave: ''
         };
       }
+
+      onClickTestWeb3Javascript = (eventId, requestId, chiaveUtente) => {		   
+        
+        const fs = require('fs');
+
+        const web3 = new Web3(Web3.givenProvider || "http://localhost:7545");
+        
+        // Funziona:
+        // web3.eth.getAccounts().then(alert);
+
+        /*
+        const contractJson = fs.readFileSync('./EventContract.abi');
+        const evabi = JSON.parse(contractJson);
+        const EventContract = new web3.eth.Contract(evabi, eventId);
+
+        const purabi = JSON.parse(PurchaseAbi);
+        const PurchaseRequestContract = new web3.eth.Contract(purabi, requestId);
+        
+        var account = web3.eth.accounts.privateKeyToAccount('828f60e450946475b88a7d8bf5b0290040399cad177acc993c95ee83d4d04a6e');
+        var tBAddress = account.address;
+
+        PurchaseRequestContract.methods.tokenId().call({from: tBAddress}, function(error, result){
+          
+          EventContract.methods.ownerOf(result)
+						.call({from: tBAddress}, function(error2, result2){
+						   alert(result2);
+			 			});
+
+          EventContract.methods.tickets(result).call({from: tBAddress}, function(error2, result2){
+            alert(result2);
+          });
+        });				   
+       }
+        */
+
+      
+        $.getJSON('../../../EventContract.abi').done(
+          function(data) {
+           const EventContract = new web3.eth.Contract(data, eventId);
+           $.getJSON('../../../PurchaseRequestContract.abi').done(function(data2) {
+            const PurchaseRequestContract = new web3.eth.Contract(data2, requestId);
+            var account = web3.eth.accounts.privateKeyToAccount(chiaveUtente);
+            var tBAddress = account.address;
+            PurchaseRequestContract.methods.tokenId().call({from: tBAddress}, function(error, result){
+              
+              EventContract.methods.ownerOf(result)
+              .call({from: tBAddress}, function(error2, result2){
+                 alert("Proprietario del biglietto: "+result2);
+               });
+               
+              /*
+              Indirizzo del NFTicket contract
+              EventContract.methods.tickets(result).call({from: tBAddress}, function(error2, result2){
+                 alert(result2);
+               }); 
+              */
+              });		
+              
+          });
+          
+        });
+      }
+      
+      handleMessaggio(key){
+        this.setState({
+          chiave: key.target.value
+        })
+      }
+        
 
       componentDidMount(){
         var auth = 'Bearer '.concat(sessionStorage.getItem('serverToken'))
@@ -70,7 +143,7 @@ class BuyerPurchaseRequests extends React.Component {
         },
       })
       alert('AAAAAAA! Non sono riuscito a pagare :(')
-      this.goBack()
+      window.location.reload();
     }
 
     pagaBiglietto = (idRichiesta) => {
@@ -145,12 +218,23 @@ class BuyerPurchaseRequests extends React.Component {
                Risposta dal reseller: {request.responseText}
             </CardText>
 
-            <button className="btn_pagamento" disabled={request.ticket.state=='PAYED'} onClick={() => this.sbagliaPagamento(request.id)}>
+            <button className="btn_pagamento" disabled={request.status=='SUCCEED'} onClick={() => this.sbagliaPagamento(request.id)}>
                 Pagamento Fallito
             </button>
 
-            <button className="btn_pagamento" disabled={request.ticket.state=='PAYED'} onClick={() => this.pagaBiglietto(request.id)}>
+            <button className="btn_pagamento" disabled={request.status=='SUCCEED'} onClick={() => this.pagaBiglietto(request.id)}>
                 Paga Biglietto
+            </button>
+
+            <form style={{border: '2px',marginBottom: '10px'}} >
+                <label>
+                  Chiave Eth: 
+                  <input style={{marginLeft: '5px', width:'300px'}} type="password" onChange={this.handleMessaggio.bind(this)}/>
+              </label>
+            </form>
+
+            <button className="btn_pagamento" disabled={request.ticket.state!='SELLED'} onClick={() => this.onClickTestWeb3Javascript(request.event.id,request.id,this.state.chiave)}>
+                Verifica proprietario
             </button>
 
           </CardBody>

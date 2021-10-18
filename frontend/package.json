@@ -13,6 +13,7 @@
     "emoji-dictionary": "^1.0.11",
     "emoji-picker-react": "^3.4.8",
     "holderjs": "^2.9.9",
+    "jquery": "^3.6.0",
     "nominatim-browser": "^2.1.0",
     "react-bootstrap": "^2.0.0-beta.4",
     "react-bootstrap-validation": "^0.1.11",

@@ -8,7 +8,8 @@ class TicketBuyerEventi extends React.Component {
         this.state = {
           selected_id_event: 0,
           openfaq: false,
-          items: []
+          items: [],
+          chiusi: []
         };
       }
 
@@ -33,9 +34,20 @@ class TicketBuyerEventi extends React.Component {
         .then(res => res.json())
         .then(
           (items) => {
+            for (var i = 0; i < items.length; i++){
+              if (items[i].opened == false){
+                this.setState({
+                  chiusi: [...this.state.chiusi, items[i]]
+                });
+              }
+              else{
+                  this.setState({
+                    items: [...this.state.items, items[i]]
+                  })
+                }
+            }
           this.setState({
               isLoaded: true,
-              items
           });
           },
           // Note: it's important to handle errors here
@@ -52,7 +64,8 @@ class TicketBuyerEventi extends React.Component {
 
     render(){
         return(
-            <div classNameName="event-list">
+      <div classNameName="event-list">
+
       {this.state.items.map(event =>(
       <div className="card text-center">
       <div className="card-header">
@@ -73,6 +86,20 @@ class TicketBuyerEventi extends React.Component {
         <h5 className="card-title">{event.title}</h5>
         <p className="card-text">{event.description}</p>
         <a href={"/event/"+event.id+"/resellers"} className="btn btn-primary button-color">Cerca dei resellers</a>
+      </div>
+    </div>
+    ))}
+
+    {this.state.chiusi.map(event =>(
+      <div className="card text-center">
+      <div className="card-header">
+        <ul className="nav nav-tabs card-header-tabs">
+        </ul>
+      </div>
+      <div className="card-body">
+        <h5 className="card-title">{event.title}</h5>
+        <p className="card-text">Questo evento è stato chiuso</p>
+       
       </div>
     </div>
     ))}
