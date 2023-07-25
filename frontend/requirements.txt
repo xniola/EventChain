@@ -3,3 +3,4 @@ npm install --save emoji-dictionary
 npm install react-google-login
 npm install --save react-router-dom
 npm install --save web3
+node versione 14
