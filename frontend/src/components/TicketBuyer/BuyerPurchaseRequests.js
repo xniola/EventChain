@@ -22,7 +22,7 @@ class BuyerPurchaseRequests extends React.Component {
 
       onClickTestWeb3Javascript = (eventId, requestId, chiaveUtente) => {		   
         
-        const fs = require('fs');
+       //const fs = require('fs');
 
         const web3 = new Web3(Web3.givenProvider || "http://localhost:7545");
         
@@ -99,7 +99,7 @@ class BuyerPurchaseRequests extends React.Component {
         .then(
           (items) => {
             for (var i = 0; i < items.length; i++){
-              if (items[i].status == 'FAILED'){
+              if (items[i].status === 'FAILED'){
                 this.setState({
                   failed_purchase: [...this.state.failed_purchase, items[i]]
                 });
@@ -218,11 +218,11 @@ class BuyerPurchaseRequests extends React.Component {
                Risposta dal reseller: {request.responseText}
             </CardText>
 
-            <button className="btn_pagamento" disabled={request.status=='SUCCEED'} onClick={() => this.sbagliaPagamento(request.id)}>
+            <button className="btn_pagamento" disabled={request.status==='SUCCEED'} onClick={() => this.sbagliaPagamento(request.id)}>
                 Pagamento Fallito
             </button>
 
-            <button className="btn_pagamento" disabled={request.status=='SUCCEED'} onClick={() => this.pagaBiglietto(request.id)}>
+            <button className="btn_pagamento" disabled={request.status==='SUCCEED'} onClick={() => this.pagaBiglietto(request.id)}>
                 Paga Biglietto
             </button>
 
@@ -233,7 +233,7 @@ class BuyerPurchaseRequests extends React.Component {
               </label>
             </form>
 
-            <button className="btn_pagamento" disabled={request.ticket.state!='SELLED'} onClick={() => this.onClickTestWeb3Javascript(request.event.id,request.id,this.state.chiave)}>
+            <button className="btn_pagamento" disabled={request.ticket.state!=='SELLED'} onClick={() => this.onClickTestWeb3Javascript(request.event.id,request.id,this.state.chiave)}>
                 Verifica proprietario
             </button>
 

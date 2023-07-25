@@ -61,10 +61,6 @@ class PurchaseRequests extends React.Component {
         this.goBack()
       }
 
-      goBack(){
-        window.location.href = "/ticketReseller/events"
-      }
-
       handleChange(chiave){
         this.setState({
           chiaveEth: chiave.target.value 
@@ -177,7 +173,7 @@ class PurchaseRequests extends React.Component {
             Status: {request.status} 
             </CardText>
             
-            <button className="btn_pagamento" style={{color: 'black', marginLeft:'300px'}} disabled={request.status!='INIT'}
+            <button className="btn_pagamento" style={{color: 'black', marginLeft:'300px'}} disabled={request.status!=='INIT'}
             onClick={() => this.validaBiglietto(request.id)}>Accetta</button>
           </CardBody>    
         </Card>
@@ -222,7 +218,7 @@ class PurchaseRequests extends React.Component {
             </label>
          </form>
             
-            <button className="btn_pagamento" style={{color: 'black', marginLeft:'300px'}} disabled={request.status=='SUCCEED'}
+            <button className="btn_pagamento" style={{color: 'black', marginLeft:'300px'}} disabled={request.status==='SUCCEED'}
             onClick={() => this.completaAcquisto(request.id)}>Rifiuta acquisto</button>
           </CardBody>    
         </Card>
@@ -273,7 +269,7 @@ class PurchaseRequests extends React.Component {
             </label>
          </form>
 
-          <button className="btn_pagamento" disabled={request.ticket.state=='SELLED'} style={{color: 'black', marginLeft:'300px'}}
+          <button className="btn_pagamento" disabled={request.ticket.state==='SELLED'} style={{color: 'black', marginLeft:'300px'}}
             onClick={() => this.completaAcquisto(request.id)}>Completa acquisto</button>
         </CardBody>    
       </Card>

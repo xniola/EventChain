@@ -32,7 +32,7 @@ class EventManagerEventi extends React.Component {
         .then(
           (items) => {
             for (var i = 0; i < items.length; i++){
-              if (items[i].opened == false){
+              if (items[i].opened === false){
                 this.setState({
                   chiusi: [...this.state.chiusi, items[i]]
                 });
