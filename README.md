@@ -1,6 +1,8 @@
-**EventChain** è una **biglietteria onlin**e basata su **blockchain Ethereum** per gestire la prenotazione dei biglietti (NFT) di qualsiasi evento. Grazie allo standard **nft** (non fungible token) è possibile tracciare il proprietario di ogni biglietto, così come è possibile prevenire scam di biglietti falsi, prevenire furti, prevenire le attività di reselling e in generale attività sospette nel commercio di biglietti.
+**EventChain** is an Ethereum blockchain-based online ticketing system to manage ticket reservation (NFT) for any event. Thanks to the nft (non-fungible token) standard, it is possible to track the owner of each ticket, as well as to prevent fake ticket scams, prevent theft, prevent reselling activities, and in general suspicious activities in ticket trading.
 
-L'applicazione è stata sviluppata in Java per quanto rigurda la sezione backend, React per la sezione frontend, e Solidity per la gestione della blockchain.
+The application was developed in Java for the backend section, React for the frontend section, and Solidity for blockchain management.
+
+Translated with DeepL.com (free version)
 
 ![video sample](frontend/screenshots/homepage.gif)
 
